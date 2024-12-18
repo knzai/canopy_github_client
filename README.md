@@ -25,4 +25,6 @@ The code implements only one method in the API - `issues`. It outputs up to an a
 2. Else, it's the issues' closed date.
 
 Number 2 is possibly not correct, atm. It may right now be only sorting at updated_at which is close, but different
+Rather then doing a manual sort, I'd probably implement the full GraphQL querying in Octokit which should let us also do additional sorts, etc.
 
+https://github.com/octokit/octokit.rb/pull/834
