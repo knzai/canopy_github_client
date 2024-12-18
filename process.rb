@@ -29,7 +29,7 @@ module Github
 
       state = open ? 'open' : 'closed'
       sort_dir = newest_first ? 'desc' : 'asc'
-      sort = open ? 'created' : 'created'
+      sort = open ? 'created' : 'updated'
 
 
       # I could keep the old algo of manually sorting responses on a paginated API if this is a hard requirement, but it's
@@ -38,12 +38,6 @@ module Github
 
       # Return a list of issues from the response, with each line showing the issue's title, whether it is open or closed,
       # the issues are sorted by the date they were updated ('closed') or created ('open'), from newest to oldest.
-      
-      if state == 'closed'
-        sort = 'updated'
-      else
-        sort = 'created'
-      end
 
       #TODO pull the option hash back out to the above state checks/flags at the beginning.
       issues = @client.list_issues 'paper-trail-gem/paper_trail', :sort => sort, :direction => sort_dir, :state => state, :per_page => per_page
