@@ -44,10 +44,10 @@ module Github
 
       # I could keep the old algo of manually sorting responses on a paginated API if this is a hard requirement, but it's
       # very suboptimal to manually re-sort an API response that has a sort parameter, and "updated_at" is probably
-      # a close or maybve even perfect proxy for closed at, so the sort should be about right anyway
+      # a close or maybe even perfect proxy for closed at, so the sort should be about right anyway
 
-      # Return a list of issues from the response, with each line showing the issue's title, whether it is open or closed,
-      # the issues are sorted by the date they were updated ('closed') or created ('open'), from newest to oldest.
+      # Return a list of issues from the response, with each line showing the issue's title, whether it is open or closed.
+      # The issues are sorted by the date they were updated ('closed') or created ('open'), with order depending on the newest_first param.
 
       issues = @client.list_issues 'paper-trail-gem/paper_trail', opts
       
