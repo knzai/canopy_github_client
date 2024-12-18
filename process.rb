@@ -21,7 +21,7 @@ module Github
       # It makes a GET request to the Github API using the official Octokit::Client.
       # It returns the response from the Github API.
 
-      # per_page controls how many are returned. I'll need to play around with the link and next headers for calling
+      # per_page controls how many are returned. I'll need to play around with the `link` and `next` headers for calling
       # next page when they set exceeds one, but I wanted to get the basics working first
       # newest_first determines which direction the sort is in
 
@@ -30,9 +30,17 @@ module Github
       sort = open ? 'created' : 'updated'
 
       opts = {}
-      opts[:state] = open ? 'open' : 'closed'
       opts[:direction] = newest_first ? 'desc' : 'asc'
       opts[:per_page] = per_page
+      if open
+        opts[:state] = 'open'
+        date_col = 'created_at'
+        date_text = "Created"
+      else
+        opts[:state] = 'closed'
+        date_col = 'created_at'
+        date_text = "Closed"
+      end
 
       # I could keep the old algo of manually sorting responses on a paginated API if this is a hard requirement, but it's
       # very suboptimal to manually re-sort an API response that has a sort parameter, and "updated_at" is probably
@@ -43,20 +51,10 @@ module Github
 
       issues = @client.list_issues 'paper-trail-gem/paper_trail', opts
       
-
-      # redo this into a method that takes a block or something.
-      # Or maybe just set the text and column in our existing state checks
-      # I just hated to have the if on the *inside* of the loop.
-      # It's minor, but it does a lot of extra checks that way (one per item)
-      if state == 'closed'
-        issues.each do |issue|
-          puts "#{issue['title']} - #{issue['state']} - Closed at: #{issue['closed_at']}"
-        end
-      else
-        issues.each do |issue|
-          puts "#{issue['title']} - #{issue['state']} - Created at: #{issue['created_at']}"
-        end
+      issues.each do |issue|
+        puts "#{issue['title']} - #{issue['state']} - #{date_text} at: #{issue[date_col]}"
       end
+
     end
   end
 end
