@@ -3,7 +3,7 @@ require 'octokit'
 module Github
   class Processor
     # This class is responsible for processing the response from the Github API.
-    # It accepts a client object and stores it as an instance variable.
+    # It istantiates its own GH Octokit client
     # It has a method called `issues` that returns a list of issues from the Github API.
     def initialize()
       @client = Octokit::Client.new(access_token: ENV['TOKEN'])
